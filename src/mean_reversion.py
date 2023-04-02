@@ -20,14 +20,14 @@ class MeanReversionStrategy:
         self.timeframe_in_minute = timeframe_in_minute
 
     def calculate_mean(self):
-        # Convert hours to the number of periods based on the timeframe
+        '''
+        Convert hours to the number of periods based on the timeframe
+        The +1 is to ensure that the first calculated mean value is not NaN due to the lack of data points.
+        '''
         periods = int((self.mean_period_in_hour * 60) /
-                      self.timeframe_in_minute)
-
-        '''
-          Do you wanna periods+1? it doesn't change the result, but start 03:55:00 
-        '''
-        self.data['mean'] = self.data['close'].rolling(window=periods).mean()
+                      self.timeframe_in_minute) + 1
+        self.data['mean'] = self.data['close'].rolling(
+            window=periods, min_periods=1).mean()
 
     def execute_trades(self):
         for index, row in self.data.iterrows():
@@ -49,10 +49,6 @@ class MeanReversionStrategy:
                     self.take_profit = current_price * \
                         (1 + self.take_profit_threshold)
 
-                    '''
-                      Feel like balance should be 0 if you mean the €account balance 
-                      Share holding can be there, current self.position
-                    '''
                     # Record the buy trade
                     self.trade_history.append({
                         'timestamp': index,
@@ -115,12 +111,12 @@ class MeanReversionStrategy:
 
     def build_equity_dataframe(self):
         '''
-            Create an initial DataFrame with only the timestamp column from the original data
+        Create an initial DataFrame with only the timestamp column from the original data
         '''
         equity_df = pd.DataFrame(self.data.index, columns=['timestamp'])
 
         '''
-            Iterate through the trade history and set the equity (balance) at each trade timestamp
+        Iterate through the trade history and set the equity (balance) at each trade timestamp
         '''
         for trade in self.trade_history:
             timestamp = trade['timestamp']
@@ -128,12 +124,12 @@ class MeanReversionStrategy:
                           timestamp, 'equity'] = trade['balance']
 
         '''
-            Forward-fill the missing equity values (NaN) with the previous equity value
+        Forward-fill the missing equity values (NaN) with the previous equity value
         '''
         equity_df['equity'].fillna(method='ffill', inplace=True)
 
         ''''
-            Fill any remaining missing values (at the beginning) with the initial balance
+        Fill any remaining missing values (at the beginning) with the initial balance
         '''
         equity_df['equity'].fillna(self.initial_balance, inplace=True)
 
