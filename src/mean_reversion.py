@@ -1,12 +1,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 class MeanReversionStrategy:
     def __init__(self, data, initial_balance=1000, entry_threshold=0.04, stoploss_threshold=0.02, take_profit_threshold=0.03, mean_period_in_hour=4, timeframe_in_minute=5):
         self.data = data
         self.initial_balance = initial_balance
         self.balance = initial_balance
-        self.position = 0 # represents the amount of the asset (e.g. Ethereum) held at a given moment
+        # represents the amount of the asset (e.g. Ethereum) held at a given moment
+        self.position = 0
         self.entry_price = 0
         self.stoploss = 0
         self.take_profit = 0
@@ -18,7 +20,9 @@ class MeanReversionStrategy:
         self.timeframe_in_minute = timeframe_in_minute
 
     def calculate_mean(self):
-        periods = int((self.mean_period_in_hour * 60) / self.timeframe_in_minute)  # Convert hours to the number of periods based on the timeframe
+        # Convert hours to the number of periods based on the timeframe
+        periods = int((self.mean_period_in_hour * 60) /
+                      self.timeframe_in_minute)
 
         '''
           Do you wanna periods+1? it doesn't change the result, but start 03:55:00 
@@ -40,8 +44,10 @@ class MeanReversionStrategy:
                     # Open a long position
                     self.position = self.balance / current_price
                     self.entry_price = current_price
-                    self.stoploss = current_price * (1 - self.stoploss_threshold)
-                    self.take_profit = current_price * (1 + self.take_profit_threshold)
+                    self.stoploss = current_price * \
+                        (1 - self.stoploss_threshold)
+                    self.take_profit = current_price * \
+                        (1 + self.take_profit_threshold)
 
                     '''
                       Feel like balance should be 0 if you mean the €account balance 
@@ -71,7 +77,6 @@ class MeanReversionStrategy:
                         'balance': self.balance,
                     })
 
-
     def analyze_performance(self):
         final_balance = self.balance
         profit = final_balance - self.initial_balance
@@ -82,7 +87,8 @@ class MeanReversionStrategy:
     def plot_performance(self):
         fig, (ax1, ax2) = plt.subplots(2, figsize=(24, 8))
         ax1.plot(self.data.index, self.data['close'], label='Close Price')
-        ax1.plot(self.data.index, self.data['mean'], label=f'{self.mean_period_in_hour}-Hour Mean')
+        ax1.plot(self.data.index, self.data['mean'],
+                 label=f'{self.mean_period_in_hour}-Hour Mean')
 
         buy_legend_added = False
         sell_legend_added = False
@@ -90,11 +96,13 @@ class MeanReversionStrategy:
         for trade in self.trade_history:
             if trade['action'] == 'buy':
                 label = 'Buy' if not buy_legend_added else None
-                ax1.scatter(trade['timestamp'], trade['price'], marker='^', color='g', label=label)
+                ax1.scatter(trade['timestamp'], trade['price'],
+                            marker='^', color='g', label=label)
                 buy_legend_added = True
             elif trade['action'] == 'sell':
                 label = 'Sell' if not sell_legend_added else None
-                ax1.scatter(trade['timestamp'], trade['price'], marker='v', color='r', label=label)
+                ax1.scatter(trade['timestamp'], trade['price'],
+                            marker='v', color='r', label=label)
                 sell_legend_added = True
 
         ax1.set_title('Close Price & Mean Reversion Trading Signals')
@@ -105,23 +113,32 @@ class MeanReversionStrategy:
         ax2.set_title('Equity Curve')
         plt.show()
 
-
     def build_equity_dataframe(self):
-        # Create an initial DataFrame with only the timestamp column from the original data
+        '''
+            Create an initial DataFrame with only the timestamp column from the original data
+        '''
         equity_df = pd.DataFrame(self.data.index, columns=['timestamp'])
 
-        # Iterate through the trade history and set the equity (balance) at each trade timestamp
+        '''
+            Iterate through the trade history and set the equity (balance) at each trade timestamp
+        '''
         for trade in self.trade_history:
             timestamp = trade['timestamp']
-            equity_df.loc[equity_df['timestamp'] == timestamp, 'equity'] = trade['balance']
+            equity_df.loc[equity_df['timestamp'] ==
+                          timestamp, 'equity'] = trade['balance']
 
-        # Forward-fill the missing equity values (NaN) with the previous equity value
+        '''
+            Forward-fill the missing equity values (NaN) with the previous equity value
+        '''
         equity_df['equity'].fillna(method='ffill', inplace=True)
 
-        # Fill any remaining missing values (at the beginning) with the initial balance
+        ''''
+            Fill any remaining missing values (at the beginning) with the initial balance
+        '''
         equity_df['equity'].fillna(self.initial_balance, inplace=True)
 
         return equity_df
+
 
 def load_data(file_path):
     data = pd.read_csv(file_path, index_col='timestamp', parse_dates=True)
