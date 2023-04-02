@@ -130,7 +130,7 @@ def load_data(file_path):
     return data
 
 def main():
-    file_path = 'ohlc.csv'
+    file_path = 'data/ohlc.csv'
     data = load_data(file_path)
     strategy = MeanReversionStrategy(data)
     strategy.calculate_mean()
