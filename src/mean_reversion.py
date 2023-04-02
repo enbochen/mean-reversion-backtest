@@ -86,20 +86,16 @@ class MeanReversionStrategy:
         ax1.plot(self.data.index, self.data['mean'],
                  label=f'{self.mean_period_in_hour}-Hour Mean')
 
-        buy_legend_added = False
-        sell_legend_added = False
+        # Convert trade history to a pandas DataFrame
+        trades_df = pd.DataFrame(self.trade_history)
 
-        for trade in self.trade_history:
-            if trade['action'] == 'buy':
-                label = 'Buy' if not buy_legend_added else None
-                ax1.scatter(trade['timestamp'], trade['price'],
-                            marker='^', color='g', label=label)
-                buy_legend_added = True
-            elif trade['action'] == 'sell':
-                label = 'Sell' if not sell_legend_added else None
-                ax1.scatter(trade['timestamp'], trade['price'],
-                            marker='v', color='r', label=label)
-                sell_legend_added = True
+        # Plot buy and sell trades separately
+        buys = trades_df[trades_df['action'] == 'buy']
+        sells = trades_df[trades_df['action'] == 'sell']
+        ax1.scatter(buys['timestamp'], buys['price'],
+                    marker='^', color='g', label='Buy')
+        ax1.scatter(sells['timestamp'], sells['price'],
+                    marker='v', color='r', label='Sell')
 
         ax1.set_title('Close Price & Mean Reversion Trading Signals')
         ax1.legend()
