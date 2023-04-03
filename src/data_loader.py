@@ -37,8 +37,10 @@ def clean_data(data):
     """
     Clean data by removing duplicates and rows with missing data, and converting column data types.
     """
-    # Remove any duplicate rows
-    data = data[~data.index.duplicated()]
+    # Check for and warn about duplicate rows
+    if data.index.duplicated().any():
+        print("WARNING: Duplicate rows detected. Removing duplicates...")
+        data = data[~data.index.duplicated()]
 
     # Validate data types and set correct columns
     data = data.astype({
@@ -49,10 +51,15 @@ def clean_data(data):
         'vol': 'float'
     })
 
-    # Validate that float values are greater than 0
+    # Validate that float values are greater than 0 and warn about removal
+    original_len = len(data)
     data = data[data.apply(lambda x: x > 0)]
+    if len(data) != original_len:
+        print("WARNING: Rows with non-positive float values detected. Removing...")
 
-    # Remove any rows with missing data
-    data.dropna(inplace=True)
+    # Remove any rows with missing data and warn about removal
+    if data.isnull().values.any():
+        print("WARNING: Rows with missing data detected. Removing...")
+        data.dropna(inplace=True)
 
     return data
