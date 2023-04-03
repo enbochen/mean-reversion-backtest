@@ -1,5 +1,6 @@
 import unittest
-from src.mean_reversion import MeanReversionStrategy, load_data
+from src.mean_reversion import MeanReversionStrategy
+from src.data_loader import load_data
 import pandas as pd
 import numpy as np
 
@@ -32,7 +33,7 @@ class TestMeanReversionStrategy(unittest.TestCase):
         self.assertIsInstance(data, pd.DataFrame)
         self.assertTrue('close' in data.columns)
 
-# Other test methods can be added here for other functions and methods
+# more test methods can be added here for other functions and methods
 
 
 if __name__ == '__main__':
