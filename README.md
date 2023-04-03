@@ -38,11 +38,13 @@ This mean reversion trading strategy backtest analyzes historical price data and
    python tests/test_mean_reversion.py
    ```
 
-## Result Preview
+## Result
 
 ![data analysis](docs/data_analysis.png)
 
 The market in the question should be ETH based on the price history and volumn.
+
+Performance:
 
 ```txt
 Initial balance: $1000.00
@@ -55,6 +57,8 @@ Percentage profit: -2.06%
 
 ## Consideration for future improvements
 
-- The close price is the used for calculating the mean for simpilicity even though the average of open, high, low, close data might provide a broader view of the volatile markets, where prices can fluctuate rapidly and unpredictably)
+- The close price is the used for calculating the mean for simpilicity even though the average of open, high, low, close data might provide a broader view of the volatile markets, where prices can fluctuate rapidly and unpredictably
 
 - Trading fees/ gas fees is not considered in this impelementation but in reality it plays an important role especially in cryptocurrency.
+
+- Performance is not the focus of this task, but it should be some kind of more efficient way than iteration loop(e.g vectorized calculation?)
