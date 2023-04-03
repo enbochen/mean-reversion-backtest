@@ -19,7 +19,7 @@ def main():
     strategy = MeanReversionStrategy(cleaned_data)
     strategy.calculate_mean()
     strategy.execute_trades()
-
+    # analyze the performance of the strategy
     final_balance, profit, percentage_profit = strategy.analyze_performance()
     display_results(strategy, final_balance, profit, percentage_profit)
     strategy.plot_performance()
