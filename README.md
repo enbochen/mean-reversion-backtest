@@ -53,5 +53,6 @@ Percentage profit: -2.06%
 
 ## Consideration
 
-1. The market in question should be ETH based on the price history and volumn
-1. The close price is the used for calculating the mean for simpilicity
+- The market in question should be ETH based on the price history and volumn
+
+- The close price is the used for calculating the mean for simpilicity even though the average of open, high, low, close data can provide a broader view of the volatile markets, where prices can fluctuate rapidly and unpredictably)
