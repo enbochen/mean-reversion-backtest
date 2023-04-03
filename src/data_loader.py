@@ -20,12 +20,6 @@ def load_data(file_path):
 def analyze_data(data):
     """
     Analyze the given OHLCV data using a candlestick chart.
-
-    Args:
-        data (pandas.DataFrame): A DataFrame containing the OHLCV data.
-
-    Returns:
-        pandas.DataFrame: The original DataFrame.
     """
     print(data.info())
 
@@ -42,12 +36,6 @@ def analyze_data(data):
 def clean_data(data):
     """
     Clean data by removing duplicates and rows with missing data, and converting column data types.
-
-    Args:
-        data (pandas.DataFrame): The raw data to be cleaned.
-
-    Returns:
-        data (pandas.DataFrame): The cleaned data as a pandas DataFrame.
     """
     # Remove any duplicate rows
     data = data[~data.index.duplicated()]
