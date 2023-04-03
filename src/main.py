@@ -1,4 +1,5 @@
-from mean_reversion import MeanReversionStrategy, load_and_clean_data
+from mean_reversion import MeanReversionStrategy
+from data_loader import load_data, clean_data
 
 
 def display_results(strategy, final_balance, profit, percentage_profit):
@@ -10,8 +11,9 @@ def display_results(strategy, final_balance, profit, percentage_profit):
 
 def main():
     file_path = 'data/ohlc.csv'
-    data = load_and_clean_data(file_path)
-    strategy = MeanReversionStrategy(data)
+    data = load_data(file_path)
+    cleaned_data = clean_data(data)
+    strategy = MeanReversionStrategy(cleaned_data)
     strategy.calculate_mean()
     strategy.execute_trades()
     final_balance, profit, percentage_profit = strategy.analyze_performance()
