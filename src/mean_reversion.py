@@ -35,6 +35,42 @@ class MeanReversionStrategy:
             window=periods, min_periods=1).mean()
         return data.assign(mean=mean)
 
+    def sell(self, current_price, index):
+        """
+        Sell the current position.
+        """
+        # Open a long position
+        self.position = self.balance / current_price
+        self.entry_price = current_price
+        self.stoploss = current_price * \
+            (1 - self.stoploss_threshold)
+        self.take_profit = current_price * \
+            (1 + self.take_profit_threshold)
+
+        # Record the buy trade
+        self.trade_history.append({
+            'timestamp': index,
+            'action': 'buy',
+            'price': current_price,
+            'balance': self.balance,
+        })
+
+    def buy(self, current_price, index):
+        """
+        Buy the current position.
+        """
+        # Close the position
+        self.balance = self.position * current_price
+        self.position = 0
+
+        # Record the sell trade
+        self.trade_history.append({
+            'timestamp': index,
+            'action': 'sell',
+            'price': current_price,
+            'balance': self.balance,
+        })
+
     def execute_trades(self, data):
         """
         Execute the mean reversion trading strategy on the historical data.
@@ -50,36 +86,12 @@ class MeanReversionStrategy:
 
                 # Check if the current price is below the entry threshold price
                 if current_price <= entry_threshold_price:
-                    # Open a long position
-                    self.position = self.balance / current_price
-                    self.entry_price = current_price
-                    self.stoploss = current_price * \
-                        (1 - self.stoploss_threshold)
-                    self.take_profit = current_price * \
-                        (1 + self.take_profit_threshold)
-
-                    # Record the buy trade
-                    self.trade_history.append({
-                        'timestamp': index,
-                        'action': 'buy',
-                        'price': current_price,
-                        'balance': self.balance,
-                    })
+                    self.sell(current_price, index)
 
             # Check if there's an open position to manage
             elif self.position > 0:
                 # Check if the current price has reached the stoploss or take_profit levels
                 if current_price <= self.stoploss or current_price >= self.take_profit:
-                    # Close the position
-                    self.balance = self.position * current_price
-                    self.position = 0
-
-                    # Record the sell trade
-                    self.trade_history.append({
-                        'timestamp': index,
-                        'action': 'sell',
-                        'price': current_price,
-                        'balance': self.balance,
-                    })
+                    self.buy(current_price, index)
 
         return self.trade_history, self.balance

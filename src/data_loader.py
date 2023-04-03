@@ -40,9 +40,6 @@ def clean_data(data):
     # Remove any duplicate rows
     data = data[~data.index.duplicated()]
 
-    # Remove any rows with missing data
-    data.dropna(inplace=True)
-
     # Validate data types and set correct columns
     data = data.astype({
         'open': 'float',
@@ -54,5 +51,8 @@ def clean_data(data):
 
     # Validate that float values are greater than 0
     data = data[data.apply(lambda x: x > 0)]
+
+    # Remove any rows with missing data
+    data.dropna(inplace=True)
 
     return data
