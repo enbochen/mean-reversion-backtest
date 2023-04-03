@@ -38,8 +38,6 @@ def analyze_data(data):
                          xaxis_rangeslider_visible=False)
     figure.show()
 
-    return data
-
 
 def clean_data(data):
     """
