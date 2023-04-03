@@ -14,14 +14,6 @@ def load_data(file_path):
     """
     data = pd.read_csv(file_path, index_col='timestamp', parse_dates=True)
     data.index = pd.to_datetime(data.index, unit='ms')
-    figure = go.Figure(data=[go.Candlestick(x=data.index,
-                                            open=data["open"],
-                                            high=data["high"],
-                                            low=data["low"],
-                                            close=data["close"])])
-    figure.update_layout(title="Time Series Analysis (Candlestick Chart)",
-                         xaxis_rangeslider_visible=True)
-    figure.show()
     return data
 
 
@@ -43,7 +35,7 @@ def analyze_data(data):
                                             low=data["low"],
                                             close=data["close"])])
     figure.update_layout(title="Time Series Analysis (Candlestick Chart)",
-                         xaxis_rangeslider_visible=True)
+                         xaxis_rangeslider_visible=False)
     figure.show()
 
     return data
