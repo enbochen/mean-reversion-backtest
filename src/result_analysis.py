@@ -15,18 +15,21 @@ def analyze_performance(final_balance, initial_balance=1000):
     print(f"Percentage profit: {percentage_profit:.2f}%")
 
 
-def plot_performance(data, trade_history, initial_balance=1000, mean_period_in_hour=4):
+def plot_close_price_and_mean(data, fig, mean_period_in_hour):
     """
-    Plot the performance of the Mean Reversion trading strategy, including the Close Price and Mean Reversion Trading Signals and Equity Curve.
+    Plot the Close Price and Mean Reversion Trading Signals.
     """
-    fig = go.Figure()
     fig.add_trace(go.Scatter(x=data.index,
                              y=data['close'], name='Close Price'))
     fig.add_trace(go.Scatter(
         x=data.index, y=data['mean'], name=f'{mean_period_in_hour}-Hour Mean'))
 
-    trades_df = pd.DataFrame(trade_history)
 
+def plot_trades(trade_history, fig):
+    """
+    Plot the Buy and Sell trades.
+    """
+    trades_df = pd.DataFrame(trade_history)
     buys = trades_df[trades_df['action'] == 'buy']
     sells = trades_df[trades_df['action'] == 'sell']
 
@@ -35,10 +38,28 @@ def plot_performance(data, trade_history, initial_balance=1000, mean_period_in_h
     fig.add_trace(go.Scatter(x=sells['timestamp'], y=sells['price'], mode='markers', marker={
         "symbol": "triangle-down", "color": "red"}, name='Sell'))
 
+
+def plot_equity_curve(data, trade_history, initial_balance, fig):
+    """
+    Plot the Equity Curve.
+    """
     equity_df = build_equity_dataframe(data, trade_history, initial_balance)
 
     fig.add_trace(go.Scatter(
         x=equity_df['timestamp'], y=equity_df['equity'], name='Equity Curve'))
+
+
+def plot_performance(data, trade_history, initial_balance=1000, mean_period_in_hour=4):
+    """
+    Plot the performance of the Mean Reversion trading strategy, including the Close Price and Mean Reversion Trading Signals and Equity Curve.
+    """
+    fig = go.Figure()
+
+    plot_close_price_and_mean(data, fig, mean_period_in_hour)
+
+    plot_trades(trade_history, fig)
+
+    plot_equity_curve(data, trade_history, initial_balance, fig)
 
     fig.update_layout(title='Trading Signals / Equity Curve',
                       xaxis_title='Date', yaxis_title='Price / Balance')

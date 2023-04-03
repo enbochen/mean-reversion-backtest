@@ -4,13 +4,7 @@ import plotly.graph_objects as go
 
 def load_data(file_path):
     """
-    Load data from a CSV file.
-
-    Args:
-        file_path (str): The path to the CSV file.
-
-    Returns:
-        data (pandas.DataFrame): The loaded data as a pandas DataFrame.
+    Load data as a pandas DataFram from a CSV file.
     """
     data = pd.read_csv(file_path, index_col='timestamp', parse_dates=True)
     data.index = pd.to_datetime(data.index, unit='ms')
