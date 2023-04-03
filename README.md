@@ -42,6 +42,8 @@ This mean reversion trading strategy backtest analyzes historical price data and
 
 ![data analysis](docs/data_analysis.png)
 
+The market in the question should be ETH based on the price history and volumn.
+
 ```txt
 Initial balance: $1000.00
 Final balance: $979.35
@@ -51,9 +53,7 @@ Percentage profit: -2.06%
 
 ![equity curve](docs/equity_curve.png)
 
-## Consideration
-
-- The market in question should be ETH based on the price history and volumn
+## Consideration for future improvements
 
 - The close price is the used for calculating the mean for simpilicity even though the average of open, high, low, close data might provide a broader view of the volatile markets, where prices can fluctuate rapidly and unpredictably)
 
