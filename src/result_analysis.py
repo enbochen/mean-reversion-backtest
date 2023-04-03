@@ -93,7 +93,7 @@ def build_equity_dataframe(data, trade_history, initial_balance):
     """
     equity_df = pd.DataFrame(data.index, columns=["timestamp"])
 
-    # Iterate through the trade history and set the equity (balance) at each trade timestamp        '''
+    # Iterate through the trade history and set the equity (balance) at each trade timestamp
     for trade in trade_history:
         timestamp = trade["timestamp"]
         equity_df.loc[equity_df["timestamp"] == timestamp, "equity"] = trade["balance"]
