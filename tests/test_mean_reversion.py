@@ -31,7 +31,11 @@ class TestMeanReversionStrategy(unittest.TestCase):
     def test_load_data(self):
         data = load_data('data/ohlc.csv')
         self.assertIsInstance(data, pd.DataFrame)
+        self.assertTrue('open' in data.columns)
         self.assertTrue('close' in data.columns)
+        self.assertTrue('high' in data.columns)
+        self.assertTrue('low' in data.columns)
+        self.assertTrue('vol' in data.columns)
 
 # more test methods can be added here for other functions and methods
 
