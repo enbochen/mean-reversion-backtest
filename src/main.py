@@ -1,5 +1,6 @@
 from mean_reversion import MeanReversionStrategy
 from data_loader import load_data, analyze_data, clean_data
+from result_analysis import analyze_performance, plot_performance
 
 
 def main():
@@ -12,11 +13,11 @@ def main():
     # use the mean reversion strategy to execute trades
     strategy = MeanReversionStrategy(cleaned_data)
     strategy.calculate_mean()
-    strategy.execute_trades()
+    trade_history, final_balance = strategy.execute_trades()
 
     # analyze the performance of the strategy
-    strategy.analyze_performance()
-    strategy.plot_performance()
+    analyze_performance(final_balance)
+    plot_performance(cleaned_data, trade_history)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,3 @@
-import pandas as pd
-import plotly.graph_objs as go
-
 
 class MeanReversionStrategy:
     def __init__(self, data, initial_balance=1000, entry_threshold=0.04, stoploss_threshold=0.02, take_profit_threshold=0.03, mean_period_in_hour=4, timeframe_in_minute=5):
@@ -84,66 +81,4 @@ class MeanReversionStrategy:
                         'price': current_price,
                         'balance': self.balance,
                     })
-
-    def analyze_performance(self):
-        """
-        Analyze the performance of the Mean Reversion trading strategy based on the trade history.
-        """
-        final_balance = self.balance
-        profit = final_balance - self.initial_balance
-        percentage_profit = (profit / self.initial_balance) * 100
-
-        print(f"Initial balance: ${self.initial_balance:.2f}")
-        print(f"Final balance: ${final_balance:.2f}")
-        print(f"Profit: ${profit:.2f}")
-        print(f"Percentage profit: {percentage_profit:.2f}%")
-
-    def plot_performance(self):
-        """
-        Plot the performance of the Mean Reversion trading strategy, including the Close Price and Mean Reversion Trading Signals and Equity Curve.
-        """
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=self.data.index,
-                      y=self.data['close'], name='Close Price'))
-        fig.add_trace(go.Scatter(
-            x=self.data.index, y=self.data['mean'], name=f'{self.mean_period_in_hour}-Hour Mean'))
-
-        trades_df = pd.DataFrame(self.trade_history)
-
-        buys = trades_df[trades_df['action'] == 'buy']
-        sells = trades_df[trades_df['action'] == 'sell']
-
-        fig.add_trace(go.Scatter(x=buys['timestamp'], y=buys['price'], mode='markers', marker={
-                      "symbol": "triangle-up", "color": "green"}, name='Buy'))
-        fig.add_trace(go.Scatter(x=sells['timestamp'], y=sells['price'], mode='markers', marker={
-                      "symbol": "triangle-down", "color": "red"}, name='Sell'))
-
-        equity_df = self.build_equity_dataframe()
-
-        fig.add_trace(go.Scatter(
-            x=equity_df['timestamp'], y=equity_df['equity'], name='Equity Curve'))
-
-        fig.update_layout(title='Trading Signals / Equity Curve',
-                          xaxis_title='Date', yaxis_title='Price / Balance')
-
-        fig.show()
-
-    def build_equity_dataframe(self):
-        """
-        Build a DataFrame of the equity curve based on the trade history.
-        """
-        equity_df = pd.DataFrame(self.data.index, columns=['timestamp'])
-
-        # Iterate through the trade history and set the equity (balance) at each trade timestamp        '''
-        for trade in self.trade_history:
-            timestamp = trade['timestamp']
-            equity_df.loc[equity_df['timestamp'] ==
-                          timestamp, 'equity'] = trade['balance']
-
-        # Forward-fill the missing equity values (NaN) with the previous equity value
-        equity_df['equity'].fillna(method='ffill', inplace=True)
-
-        # Fill any remaining missing values (at the beginning) with the initial balance
-        equity_df['equity'].fillna(self.initial_balance, inplace=True)
-
-        return equity_df
+        return self.trade_history, self.balance
