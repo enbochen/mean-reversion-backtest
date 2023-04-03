@@ -1,5 +1,5 @@
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.graph_objs as go
 
 
 class MeanReversionStrategy:
@@ -100,28 +100,34 @@ class MeanReversionStrategy:
         """
         Plot the performance of the Mean Reversion trading strategy, including the Close Price and Mean Reversion Trading Signals and Equity Curve.
         """
-        fig, (ax1, ax2) = plt.subplots(2, figsize=(24, 8))
-        ax1.plot(self.data.index,
-                 self.data['close'], label='Close Price')
-        ax1.plot(self.data.index, self.data['mean'],
-                 label=f'{self.mean_period_in_hour}-Hour Mean')
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=self.data.index,
+                      y=self.data['close'], name='Close Price'))
+        fig.add_trace(go.Scatter(
+            x=self.data.index, y=self.data['mean'], name=f'{self.mean_period_in_hour}-Hour Mean'))
 
         trades_df = pd.DataFrame(self.trade_history)
 
         buys = trades_df[trades_df['action'] == 'buy']
         sells = trades_df[trades_df['action'] == 'sell']
-        ax1.scatter(buys['timestamp'], buys['price'],
-                    marker='^', color='g', label='Buy')
-        ax1.scatter(sells['timestamp'], sells['price'],
-                    marker='v', color='r', label='Sell')
 
-        ax1.set_title('Close Price & Mean Reversion Trading Signals')
-        ax1.legend()
+        fig.add_trace(go.Scatter(x=buys['timestamp'], y=buys['price'], mode='markers', marker=dict(
+            symbol='triangle-up', color='green'), name='Buy'))
+        fig.add_trace(go.Scatter(x=sells['timestamp'], y=sells['price'], mode='markers', marker=dict(
+            symbol='triangle-down', color='red'), name='Sell'))
+
+        fig.update_layout(title='Close Price & Mean Reversion Trading Signals',
+                          xaxis_title='Date', yaxis_title='Price')
 
         equity_df = self.build_equity_dataframe()
-        ax2.plot(equity_df['timestamp'], equity_df['equity'])
-        ax2.set_title('Equity Curve')
-        plt.show()
+
+        fig.add_trace(go.Scatter(
+            x=equity_df['timestamp'], y=equity_df['equity'], name='Equity Curve'))
+
+        fig.update_layout(title='Equity Curve',
+                          xaxis_title='Date', yaxis_title='Balance')
+
+        fig.show()
 
     def build_equity_dataframe(self):
         """
