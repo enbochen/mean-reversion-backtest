@@ -25,6 +25,30 @@ def load_data(file_path):
     return data
 
 
+def analyze_data(data):
+    """
+    Analyze the given OHLCV data using a candlestick chart.
+
+    Args:
+        data (pandas.DataFrame): A DataFrame containing the OHLCV data.
+
+    Returns:
+        pandas.DataFrame: The original DataFrame.
+    """
+    print(data.info())
+
+    figure = go.Figure(data=[go.Candlestick(x=data.index,
+                                            open=data["open"],
+                                            high=data["high"],
+                                            low=data["low"],
+                                            close=data["close"])])
+    figure.update_layout(title="Time Series Analysis (Candlestick Chart)",
+                         xaxis_rangeslider_visible=True)
+    figure.show()
+
+    return data
+
+
 def clean_data(data):
     """
     Clean data by removing duplicates and rows with missing data, and converting column data types.
@@ -35,8 +59,6 @@ def clean_data(data):
     Returns:
         data (pandas.DataFrame): The cleaned data as a pandas DataFrame.
     """
-    print(data.info())
-
     # Remove any duplicate rows
     data = data[~data.index.duplicated()]
 

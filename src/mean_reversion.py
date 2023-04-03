@@ -18,7 +18,6 @@ class MeanReversionStrategy:
         self.data = data
         self.initial_balance = initial_balance
         self.balance = initial_balance
-        # represents the amount of the asset (e.g. Ethereum) held at a given moment
         self.position = 0
         self.entry_price = 0
         self.stoploss = 0
@@ -111,21 +110,18 @@ class MeanReversionStrategy:
         buys = trades_df[trades_df['action'] == 'buy']
         sells = trades_df[trades_df['action'] == 'sell']
 
-        fig.add_trace(go.Scatter(x=buys['timestamp'], y=buys['price'], mode='markers', marker=dict(
-            symbol='triangle-up', color='green'), name='Buy'))
-        fig.add_trace(go.Scatter(x=sells['timestamp'], y=sells['price'], mode='markers', marker=dict(
-            symbol='triangle-down', color='red'), name='Sell'))
-
-        fig.update_layout(title='Close Price & Mean Reversion Trading Signals',
-                          xaxis_title='Date', yaxis_title='Price')
+        fig.add_trace(go.Scatter(x=buys['timestamp'], y=buys['price'], mode='markers', marker={
+                      "symbol": "triangle-up", "color": "green"}, name='Buy'))
+        fig.add_trace(go.Scatter(x=sells['timestamp'], y=sells['price'], mode='markers', marker={
+                      "symbol": "triangle-down", "color": "red"}, name='Sell'))
 
         equity_df = self.build_equity_dataframe()
 
         fig.add_trace(go.Scatter(
             x=equity_df['timestamp'], y=equity_df['equity'], name='Equity Curve'))
 
-        fig.update_layout(title='Equity Curve',
-                          xaxis_title='Date', yaxis_title='Balance')
+        fig.update_layout(title='Trading Signals / Equity Curve',
+                          xaxis_title='Date', yaxis_title='Price / Balance')
 
         fig.show()
 
@@ -133,7 +129,6 @@ class MeanReversionStrategy:
         """
         Build a DataFrame of the equity curve based on the trade history.
         """
-        # Create an initial DataFrame with only the timestamp column from the original data
         equity_df = pd.DataFrame(self.data.index, columns=['timestamp'])
 
         # Iterate through the trade history and set the equity (balance) at each trade timestamp        '''
