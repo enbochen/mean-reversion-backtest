@@ -34,9 +34,9 @@ def plot_trades(trade_history, fig):
     sells = trades_df[trades_df['action'] == 'sell']
 
     fig.add_trace(go.Scatter(x=buys['timestamp'], y=buys['price'], mode='markers', marker={
-        "symbol": "triangle-up", "color": "green"}, name='Buy'))
+        'symbol': 'triangle-up', 'color': 'green'}, name='Buy'))
     fig.add_trace(go.Scatter(x=sells['timestamp'], y=sells['price'], mode='markers', marker={
-        "symbol": "triangle-down", "color": "red"}, name='Sell'))
+        'symbol': 'triangle-down', 'color': 'red'}, name='Sell'))
 
 
 def plot_equity_curve(data, trade_history, initial_balance, fig):
