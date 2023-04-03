@@ -1,6 +1,6 @@
 # Mean Reversion Trading Backtest
 
-This project is an implementation of [mean reversion coding task](https://gist.github.com/ekreutz/7f4cd0706e456c53a98d8fd24ba160de/)
+This project is an implementation of [mean reversion coding task](https://gist.github.com/ekreutz/7f4cd0706e456c53a98d8fd24ba160de/) using Python following [PEP 8 style](https://peps.python.org/pep-0008/)
 
 This mean reversion trading strategy backtest analyzes historical price data and executes trades based on deviations from the moving average. It also includes data visualization of the performance.
 
