@@ -81,4 +81,5 @@ class MeanReversionStrategy:
                         'price': current_price,
                         'balance': self.balance,
                     })
+
         return self.trade_history, self.balance

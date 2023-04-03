@@ -42,7 +42,7 @@ This mean reversion trading strategy backtest analyzes historical price data and
 
 ![data analysis](docs/data_analysis.png)
 
-```
+```txt
 Initial balance: $1000.00
 Final balance: $979.35
 Profit: $-20.65
@@ -57,4 +57,4 @@ Percentage profit: -2.06%
 
 - The close price is the used for calculating the mean for simpilicity even though the average of open, high, low, close data might provide a broader view of the volatile markets, where prices can fluctuate rapidly and unpredictably)
 
-- Trading fees/ gas fees is not considered in this impelementation but in reality it plays an important role in cryptocurrency.
+- Trading fees/ gas fees is not considered in this impelementation but in reality it plays an important role especially in cryptocurrency.

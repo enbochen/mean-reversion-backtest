@@ -8,22 +8,21 @@ import numpy as np
 class TestMeanReversionStrategy(unittest.TestCase):
 
     def setUp(self):
-        self.test_data = {
+        self.test_data = pd.DataFrame({
             'timestamp': pd.to_datetime([
                 '2020-01-01 00:00:00', '2020-01-01 01:00:00',
                 '2020-01-01 02:00:00', '2020-01-01 03:00:00',
                 '2020-01-01 04:00:00'
             ]),
             'close': [100, 101, 100, 102, 103],
-        }
+        })
 
-        self.df = pd.DataFrame(self.test_data)
-        self.strategy = MeanReversionStrategy(self.df, mean_period_in_hour=4)
+        self.strategy = MeanReversionStrategy(mean_period_in_hour=4)
 
     def test_calculate_mean(self):
-        self.strategy.calculate_mean()
+        test_data_with_mean = self.strategy.calculate_mean(self.test_data)
         expected_mean = [100.0, 100.5, 100.33333333333333, 100.75, 101.2]
-        actual_mean = self.strategy.data['mean'].tolist()
+        actual_mean = test_data_with_mean['mean'].tolist()
         # Check if the calculated mean is close to the expected mean
         self.assertTrue(np.allclose(actual_mean, expected_mean,
                         rtol=1e-05, atol=1e-08, equal_nan=True))
