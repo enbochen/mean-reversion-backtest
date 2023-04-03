@@ -26,10 +26,16 @@ It implements a Mean Reversion Trading Strategy backtest using Python. The backt
    pip install -r requirements.txt
    ```
 
-1. run the script:
+1. run the backtest script:
 
    ```bash
    python src/main.py
+   ```
+
+1. run the tests:
+
+   ```bash
+   python tests/test_mean_reversion.py
    ```
 
 ## Result Preview
