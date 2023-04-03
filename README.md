@@ -1,6 +1,6 @@
 # Mean Reversion Trading Backtest
 
-This project is an implementation of [mean reversion coding task](https://gist.github.com/ekreutz/7f4cd0706e456c53a98d8fd24ba160de/) using Python following [PEP 8 style](https://peps.python.org/pep-0008/)
+This project is an implementation of [mean reversion coding task](https://gist.github.com/ekreutz/7f4cd0706e456c53a98d8fd24ba160de/) using Python following [PEP 8 style](https://peps.python.org/pep-0008/).
 
 This mean reversion trading strategy backtest analyzes historical price data and executes trades based on deviations from the moving average. It also includes data visualization of the performance.
 
@@ -62,3 +62,5 @@ Percentage profit: -2.06%
 - Trading fees/ gas fees is not considered in this impelementation but in reality it plays an important role especially in cryptocurrency.
 
 - Performance is not the focus of this task, but it should be some kind of more efficient way than iteration loop(e.g vectorized calculation?)
+
+- looking forward to hearing feedbacks and more improvement ideas :)
