@@ -31,3 +31,9 @@ It implements a Mean Reversion Trading Strategy backtest using Python. The backt
 ```bash
     python src/main.py
 ```
+
+### Consideration
+
+1. The market in question should be ETH based on the price history and volumn
+1. The close price is the most commonly used price point for calculating the mean in Mean Reversion trading strategy. On the other hand, it could be caculated using average of open, close, high, and low price, which can provide a broader view of the volatile markets(I discovered the difference of those can be up to 8%) such as cryptocurrencies, where prices can fluctuate rapidly and unpredictably. I compared the results, which is so different (profit -2.06% with close price and 71.68% with the average of 4 prices). But for simpilicity, the close price is used in this implementation.
+1.

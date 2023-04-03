@@ -20,10 +20,10 @@ class MeanReversionStrategy:
         self.timeframe_in_minute = timeframe_in_minute
 
     def calculate_mean(self):
-        '''
+        """
         Convert hours to the number of periods based on the timeframe
         The +1 is to ensure that the first calculated mean value is not NaN due to the lack of data points.
-        '''
+        """
         periods = int((self.mean_period_in_hour * 60) /
                       self.timeframe_in_minute) + 1
         self.data['mean'] = self.data['close'].rolling(
@@ -82,7 +82,8 @@ class MeanReversionStrategy:
 
     def plot_performance(self):
         fig, (ax1, ax2) = plt.subplots(2, figsize=(24, 8))
-        ax1.plot(self.data.index, self.data['close'], label='Close Price')
+        ax1.plot(self.data.index,
+                 self.data['close'], label='Close Price')
         ax1.plot(self.data.index, self.data['mean'],
                  label=f'{self.mean_period_in_hour}-Hour Mean')
 
@@ -132,7 +133,28 @@ class MeanReversionStrategy:
         return equity_df
 
 
-def load_data(file_path):
+def load_and_clean_data(file_path):
+    # Load data
     data = pd.read_csv(file_path, index_col='timestamp', parse_dates=True)
     data.index = pd.to_datetime(data.index, unit='ms')
+
+    # Remove any duplicate rows
+    print(data[data.duplicated()])
+    data = data[~data.index.duplicated()]
+
+    # Remove any rows with missing data
+    data.dropna(inplace=True)
+
+    # Validate data types and set correct columns
+    data = data.astype({
+        'open': 'float',
+        'high': 'float',
+        'low': 'float',
+        'close': 'float',
+        'vol': 'float'
+    })
+
+    # Print data information
+    print(data.info())
+
     return data
