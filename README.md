@@ -8,29 +8,29 @@ It implements a Mean Reversion Trading Strategy backtest using Python. The backt
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/yourusername/mean-reversion-trading-strategy.git
-cd mean-reversion-trading-strategy
-```
+   ```bash
+   git clone https://github.com/yourusername/mean-reversion-trading-strategy.git
+   cd mean-reversion-trading-strategy
+   ```
 
 1. Create a virtual environment (optional but recommended):
 
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
 
 1. Install the required packages:
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 1. run the script:
 
-```bash
-python src/main.py
-```
+   ```bash
+   python src/main.py
+   ```
 
 ### Consideration
 
