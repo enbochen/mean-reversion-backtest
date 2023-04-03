@@ -63,4 +63,4 @@ Percentage profit: -2.06%
 
 - Performance is not the focus of this task, but it should be some kind of more efficient way than iteration loop(e.g vectorized calculation?)
 
-- looking forward to hearing feedbacks and more improvement ideas :)
+- Looking forward to hearing feedbacks and more improvement ideas :)
