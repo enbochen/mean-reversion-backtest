@@ -1,6 +1,6 @@
 
 class MeanReversionStrategy:
-    def __init__(self, data, initial_balance=1000, entry_threshold=0.04, stoploss_threshold=0.02, take_profit_threshold=0.03, mean_period_in_hour=4, timeframe_in_minute=5):
+    def __init__(self, initial_balance=1000, entry_threshold=0.04, stoploss_threshold=0.02, take_profit_threshold=0.03, mean_period_in_hour=4, timeframe_in_minute=5):
         """
         Initialize the Mean Reversion Strategy class with given parameters.
 
@@ -12,7 +12,6 @@ class MeanReversionStrategy:
         :param mean_period_in_hour: The period for calculating the mean price, in hours.
         :param timeframe_in_minute: The timeframe of the historical data, in minutes.
         """
-        self.data = data
         self.initial_balance = initial_balance
         self.balance = initial_balance
         self.position = 0
@@ -26,20 +25,21 @@ class MeanReversionStrategy:
         self.mean_period_in_hour = mean_period_in_hour
         self.timeframe_in_minute = timeframe_in_minute
 
-    def calculate_mean(self):
+    def calculate_mean(self, data):
         """
         Calculate the rolling mean price for the historical data.
         """
         periods = int((self.mean_period_in_hour * 60) /
                       self.timeframe_in_minute) + 1  # The +1 is to ensure that the first calculated mean value is not NaN due to the lack of data points.
-        self.data['mean'] = self.data['close'].rolling(
+        mean = data['close'].rolling(
             window=periods, min_periods=1).mean()
+        return data.assign(mean=mean)
 
-    def execute_trades(self):
+    def execute_trades(self, data):
         """
         Execute the mean reversion trading strategy on the historical data.
         """
-        for index, row in self.data.iterrows():
+        for index, row in data.iterrows():
             current_price = row['close']
             mean_price = row['mean']
 
