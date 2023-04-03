@@ -32,7 +32,20 @@ It implements a Mean Reversion Trading Strategy backtest using Python. The backt
    python src/main.py
    ```
 
-### Consideration
+## Result Preview
+
+![data analysis](docs/data_analysis.png)
+
+```
+Initial balance: $1000.00
+Final balance: $979.35
+Profit: $-20.65
+Percentage profit: -2.06%
+```
+
+![equity curve](docs/equity_curve.png)
+
+## Consideration
 
 1. The market in question should be ETH based on the price history and volumn
 1. The close price is the used for calculating the mean for simpilicity

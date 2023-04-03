@@ -93,7 +93,7 @@ class MeanReversionStrategy:
         profit = final_balance - self.initial_balance
         percentage_profit = (profit / self.initial_balance) * 100
 
-        print(f"Initial balance: ${strategy.initial_balance:.2f}")
+        print(f"Initial balance: ${self.initial_balance:.2f}")
         print(f"Final balance: ${final_balance:.2f}")
         print(f"Profit: ${profit:.2f}")
         print(f"Percentage profit: {percentage_profit:.2f}%")
