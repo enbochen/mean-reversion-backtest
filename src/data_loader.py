@@ -6,8 +6,8 @@ def load_data(file_path):
     """
     Load data as a pandas DataFram from a CSV file.
     """
-    data = pd.read_csv(file_path, index_col='timestamp', parse_dates=True)
-    data.index = pd.to_datetime(data.index, unit='ms')
+    data = pd.read_csv(file_path, index_col="timestamp", parse_dates=True)
+    data.index = pd.to_datetime(data.index, unit="ms")
     return data
 
 
@@ -17,13 +17,21 @@ def analyze_data(data):
     """
     print(data.info())
 
-    figure = go.Figure(data=[go.Candlestick(x=data.index,
-                                            open=data["open"],
-                                            high=data["high"],
-                                            low=data["low"],
-                                            close=data["close"])])
-    figure.update_layout(title="Time Series Analysis (Candlestick Chart)",
-                         xaxis_rangeslider_visible=False)
+    figure = go.Figure(
+        data=[
+            go.Candlestick(
+                x=data.index,
+                open=data["open"],
+                high=data["high"],
+                low=data["low"],
+                close=data["close"],
+            )
+        ]
+    )
+    figure.update_layout(
+        title="Time Series Analysis (Candlestick Chart)",
+        xaxis_rangeslider_visible=False,
+    )
     figure.show()
 
 
@@ -37,13 +45,15 @@ def clean_data(data):
         data = data[~data.index.duplicated()]
 
     # Validate data types and set correct columns
-    data = data.astype({
-        'open': 'float',
-        'high': 'float',
-        'low': 'float',
-        'close': 'float',
-        'vol': 'float'
-    })
+    data = data.astype(
+        {
+            "open": "float",
+            "high": "float",
+            "low": "float",
+            "close": "float",
+            "vol": "float",
+        }
+    )
 
     # Validate that float values are greater than 0 and warn about removal
     original_len = len(data)

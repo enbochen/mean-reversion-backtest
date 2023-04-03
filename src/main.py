@@ -5,7 +5,7 @@ from result_analysis import analyze_performance, plot_performance
 
 def main():
     # prepare, analyze and clean the data
-    file_path = 'data/ohlc.csv'
+    file_path = "data/ohlc.csv"
     data = load_data(file_path)
     analyze_data(data)
     cleaned_data = clean_data(data)
@@ -20,5 +20,5 @@ def main():
     plot_performance(data_with_mean, trade_history)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -1,6 +1,13 @@
-
 class MeanReversionStrategy:
-    def __init__(self, initial_balance=1000, entry_threshold=0.04, stoploss_threshold=0.02, take_profit_threshold=0.03, mean_period_in_hour=4, timeframe_in_minute=5):
+    def __init__(
+        self,
+        initial_balance=1000,
+        entry_threshold=0.04,
+        stoploss_threshold=0.02,
+        take_profit_threshold=0.03,
+        mean_period_in_hour=4,
+        timeframe_in_minute=5,
+    ):
         """
         Initialize the Mean Reversion Strategy class with given parameters.
 
@@ -29,10 +36,10 @@ class MeanReversionStrategy:
         """
         Calculate the rolling mean price for the historical data.
         """
-        periods = int((self.mean_period_in_hour * 60) /
-                      self.timeframe_in_minute) + 1  # The +1 is to ensure that the first calculated mean value is not NaN due to the lack of data points.
-        mean = data['close'].rolling(
-            window=periods, min_periods=1).mean()
+        periods = (
+            int((self.mean_period_in_hour * 60) / self.timeframe_in_minute) + 1
+        )  # The +1 is to ensure that the first calculated mean value is not NaN due to the lack of data points.
+        mean = data["close"].rolling(window=periods, min_periods=1).mean()
         return data.assign(mean=mean)
 
     def sell(self, current_price, index):
@@ -42,18 +49,18 @@ class MeanReversionStrategy:
         # Open a long position
         self.position = self.balance / current_price
         self.entry_price = current_price
-        self.stoploss = current_price * \
-            (1 - self.stoploss_threshold)
-        self.take_profit = current_price * \
-            (1 + self.take_profit_threshold)
+        self.stoploss = current_price * (1 - self.stoploss_threshold)
+        self.take_profit = current_price * (1 + self.take_profit_threshold)
 
         # Record the buy trade
-        self.trade_history.append({
-            'timestamp': index,
-            'action': 'buy',
-            'price': current_price,
-            'balance': self.balance,
-        })
+        self.trade_history.append(
+            {
+                "timestamp": index,
+                "action": "buy",
+                "price": current_price,
+                "balance": self.balance,
+            }
+        )
 
     def buy(self, current_price, index):
         """
@@ -64,20 +71,22 @@ class MeanReversionStrategy:
         self.position = 0
 
         # Record the sell trade
-        self.trade_history.append({
-            'timestamp': index,
-            'action': 'sell',
-            'price': current_price,
-            'balance': self.balance,
-        })
+        self.trade_history.append(
+            {
+                "timestamp": index,
+                "action": "sell",
+                "price": current_price,
+                "balance": self.balance,
+            }
+        )
 
     def execute_trades(self, data):
         """
         Execute the mean reversion trading strategy on the historical data.
         """
         for index, row in data.iterrows():
-            current_price = row['close']
-            mean_price = row['mean']
+            current_price = row["close"]
+            mean_price = row["mean"]
 
             # Check if there's an open position
             if self.position == 0:
