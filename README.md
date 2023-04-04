@@ -9,7 +9,7 @@ This mean reversion backtest analyzes historical price data and executes trades 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/mean-reversion-trading-strategy.git
+   git clone git@github.com:enbochen/mean-reversion-backtest.git
    cd mean-reversion-trading-strategy
    ```
 
